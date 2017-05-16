@@ -3,9 +3,9 @@ project(betterave)
 
 find_package(PkgConfig)
 
-set(IS_LIRMIA ON)
+set(IS_LIRMIA OFF)
 set(IS_SAYAB OFF)
-set(IS_R2D2 OFF)
+set(IS_R2D2 ON)
 set(IS_COOKIE OFF)
 set(IS_SIMU OFF)
 
@@ -68,14 +68,15 @@ elseif(${IS_R2D2})
 		add_definitions(-DENABLE_CAM1)
 		add_definitions(-DENABLE_TCPCAM)	# needs TCP and CAM1
 	else(${IS_SIMU})
-		set(ENABLE_GRAPHVIZ OFF)
-		set(ENABLE_SDL OFF)
+		set(ENABLE_GRAPHVIZ ON)
+		set(ENABLE_SDL ON)
 		add_definitions(-DENABLE_SERIAL)
 		add_definitions(-DENABLE_I2C)
 		add_definitions(-DENABLE_MOTORS)	# needs serial
 		add_definitions(-DENABLE_TCP)
 		add_definitions(-DENABLE_CAM1)
 		add_definitions(-DENABLE_TCPCAM)	# needs TCP and CAM1
+		add_definitions(-DENABLE_SERIAL_RS232_SONAR)#mod
 	endif(${IS_SIMU})
 elseif(${IS_COOKIE})
 	if(${IS_SIMU})
@@ -127,7 +128,7 @@ add_library(BETTERAVE_USER_COMMON
 	src/parts/Imu_UM6LT.h			src/parts/Imu_UM6LT.cpp
 	src/parts/Imu_razor.h			src/parts/Imu_razor.cpp
 	src/parts/Subscriber.h			src/parts/Subscriber.cpp
-	src/interfaces/Maths_tools.h
+	src/interfaces/Maths_tools.h		src/parts/Sonar.cpp
 )
 
 if(${IS_LIRMIA})
@@ -188,6 +189,7 @@ elseif(${IS_R2D2})
 		src/parts/r2d2/Remote_monitor.h		src/parts/r2d2/Remote_monitor.cpp
 		src/parts/r2d2/State.h			src/parts/r2d2/State.cpp
 		src/parts/r2d2/State_machine.h		src/parts/r2d2/State_machine.cpp
+		#src/parts/r2d2/Statetry.cpp
 	)
 	add_executable(r2d2 src/mains/R2D2.cpp)
 	add_executable(camera_r2d2 src/remote/remote_cam_r2d2.cpp)
